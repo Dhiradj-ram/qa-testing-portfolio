@@ -51,7 +51,7 @@ The collection also contains negative test scenarios to verify how the API handl
 * JSON response validation
   
 
-  ## Additional API Collections
+## Additional API Collections
 
 ### Tool Rental API
 
