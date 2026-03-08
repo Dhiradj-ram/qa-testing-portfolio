@@ -1,0 +1,555 @@
+{
+  "info": {
+    "_postman_id": "7221353c-b620-430c-810e-c195dc2b2fff",
+    "name": "Tool Rental API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42831559"
+  },
+  "item": [
+    {
+      "name": "Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/status",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all Tools",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/tools?results=",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "tools"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "trailers",
+              "disabled": true
+            },
+            {
+              "key": "results",
+              "value": ""
+            },
+            {
+              "key": "available",
+              "value": "false",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get single Tool",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/tools/:toolId",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "tools",
+            ":toolId"
+          ],
+          "query": [
+            {
+              "key": "user-manual",
+              "value": "true",
+              "type": "text",
+              "disabled": true
+            }
+          ],
+          "variable": [
+            {
+              "key": "toolId",
+              "value": "4643"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Register API Client",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "7b525e85a6ae4104cf438b68778b3570e0c01f7cd03c69acd36645fc06c433ed",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n   \"clientName\": \"Postman App\",\r\n   \"clientEmail\": \"Ashley@example.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/api-clients",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api-clients"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create order",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Validate that Authorization header is set",
+              "if (!pm.request.headers.has('Authorization')) {",
+              "    console.error('Authorization header is missing!');",
+              "}",
+              "",
+              "// Validate Authorization token variable is set",
+              "const authToken = pm.environment.get('apiToken') || pm.collectionVariables.get('apiToken') || pm.globals.get('apiToken');",
+              "if (!authToken) {",
+              "    console.error('apiToken variable is not set in environment, collection, or globals!');",
+              "}",
+              "",
+              "// Validate request body before sending",
+              "try {",
+              "    const requestBody = JSON.parse(pm.request.body.raw);",
+              "    ",
+              "    // Validate toolId",
+              "    if (!requestBody.hasOwnProperty('toolId')) {",
+              "        console.error('Request body is missing required field: toolId');",
+              "    } else if (typeof requestBody.toolId !== 'number') {",
+              "        console.error('toolId must be a number');",
+              "    }",
+              "    ",
+              "    // Validate customerName",
+              "    if (!requestBody.hasOwnProperty('customerName')) {",
+              "        console.error('Request body is missing required field: customerName');",
+              "    } else if (typeof requestBody.customerName !== 'string' || requestBody.customerName.trim() === '') {",
+              "        console.error('customerName must be a non-empty string');",
+              "    }",
+              "    ",
+              "    console.log('Request body validation passed');",
+              "} catch (e) {",
+              "    console.error('Request body is not valid JSON:', e.message);",
+              "}",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test for successful response",
+              "pm.test(\"Status code is 201 Created\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "// Test for authorization errors",
+              "pm.test(\"Authorization header is accepted\", function () {",
+              "    pm.expect(pm.response.code).to.not.equal(401);",
+              "    pm.expect(pm.response.code).to.not.equal(403);",
+              "});",
+              "",
+              "// Test response structure for successful requests",
+              "if (pm.response.code === 201) {",
+              "    pm.test(\"Response has required fields\", function () {",
+              "        var jsonData = pm.response.json();",
+              "        pm.expect(jsonData).to.have.property('orderId');",
+              "        pm.expect(jsonData).to.have.property('created');",
+              "    });",
+              "    ",
+              "    pm.test(\"Order ID is valid\", function () {",
+              "        var jsonData = pm.response.json();",
+              "        pm.expect(jsonData.orderId).to.be.a('string');",
+              "        pm.expect(jsonData.orderId).to.not.be.empty;",
+              "    });",
+              "}",
+              "",
+              "// Test for bad request errors",
+              "pm.test(\"Request body validation\", function () {",
+              "    if (pm.response.code === 400) {",
+              "        var jsonData = pm.response.json();",
+              "        pm.expect(jsonData).to.have.property('error');",
+              "        console.log(\"Validation error:\", jsonData.error);",
+              "    }",
+              "});",
+              "",
+              "// Test for missing authorization",
+              "pm.test(\"No missing authorization error\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    if (pm.response.code === 401) {",
+              "        pm.expect(jsonData.error).to.not.include(\"Missing Authorization header\");",
+              "    }",
+              "});",
+              "",
+              "// Test response time",
+              "pm.test(\"Response time is acceptable\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+              "});",
+              "",
+              "// Test content type",
+              "pm.test(\"Content-Type is application/json\", function () {",
+              "    pm.response.to.have.header(\"Content-Type\");",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "// Validate request body was properly formatted",
+              "pm.test(\"Request body is valid JSON\", function () {",
+              "    try {",
+              "        var requestBody = JSON.parse(pm.request.body.raw);",
+              "        pm.expect(requestBody).to.have.property('toolId');",
+              "        pm.expect(requestBody).to.have.property('customerName');",
+              "        pm.expect(requestBody.toolId).to.be.a('number');",
+              "        pm.expect(requestBody.customerName).to.be.a('string');",
+              "    } catch (e) {",
+              "        pm.expect.fail(\"Request body is not valid JSON\");",
+              "    }",
+              "});",
+              "",
+              "console.log (pm.collectionVariables.get(\"apiToken\"));",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "",
+            "value": "",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Authorization",
+            "value": "{{apiToken}}",
+            "description": "edeae38d7a626947aaea0de7578413892d3409defaa906d789ae88a3d23ec290",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"toolId\": 4643,\r\n    \"customerName\": \"{{$randomFullName\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/orders",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all orders",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiTOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/orders",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get single order",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiTOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/orders/:orderId",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "orders",
+            ":orderId"
+          ],
+          "variable": [
+            {
+              "key": "orderId",
+              "value": "SpTuK4BshBuetovqYHMeq"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update order",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "});\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.value).to.eql(100);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiTOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"customerName\" : \"Joe {{$randomLastName}}\", \r\n    \"comment\": \"pickup after 17:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/orders/:orderId",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "orders",
+            ":orderId"
+          ],
+          "variable": [
+            {
+              "key": "orderId",
+              "value": "SpTuK4BshBuetovqYHMeq"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete order",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiTOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/orders/:orderId",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "orders",
+            ":orderId"
+          ],
+          "variable": [
+            {
+              "key": "orderId",
+              "value": "SpTuK4BshBuetovqYHMeq"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Check if order deleted",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Set Authorization header with Bearer token",
+              "pm.request.headers.add({",
+              "    key: 'Authorization',",
+              "    value: 'Bearer ' + pm.variables.get('apiTOKEN')",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{apiTOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/orders/:orderId",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "orders",
+            ":orderId"
+          ],
+          "variable": [
+            {
+              "key": "orderId",
+              "value": "SpTuK4BshBuetovqYHMeq"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": "https://simple-tool-rental-api.glitch.me"
+    },
+    {
+      "key": "apiToken",
+      "value": ""
+    }
+  ]
+}
