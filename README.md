@@ -1,14 +1,14 @@
 # QA Testing Portfolio
 
-This repository contains examples of my **manual software testing work** created as part of my learning journey toward becoming a **Software Tester / QA Engineer**.
+This repository contains examples of my software testing work created as part of my learning journey toward becoming a Software Tester / QA Engineer.
 
-The portfolio demonstrates my ability to design test cases, identify defects and document testing results in a structured way.
+The portfolio demonstrates my ability to design manual test cases, identify defects, test APIs and document testing results in a structured way.
 
 ---
 
-## Repository Structure
+# Repository Structure
 
-### Test Cases
+## Test Cases
 
 Manual test cases designed for a public platform signup and login flow.
 
@@ -26,7 +26,7 @@ test-cases/
 
 ---
 
-### Bug Reports
+## Bug Reports
 
 Examples of documented bugs discovered during exploratory testing.
 
@@ -37,7 +37,7 @@ The bug reports include:
 * steps to reproduce
 * expected result
 * actual result
-* severity / priority
+* priority
 
 Folder:
 
@@ -45,37 +45,13 @@ bug-reports/
 
 ---
 
-## Tools Used
+## API Testing
 
-The test cases and reports were created using:
+Examples of REST API testing using Postman.
 
-* Google Sheets
-* Manual test documentation
-* Structured QA test design techniques
+The collections demonstrate different API testing techniques such as:
 
----
-
-## Purpose of This Repository
-
-This repository demonstrates my ability to:
-
-* design structured manual test cases
-* apply test design techniques
-* document bugs clearly
-* think from a quality assurance perspective
-
----
-
-## Related Automation Project
-
-In addition to manual testing, I also work with **test automation using Playwright**.
-
-My automation project can be found on my GitHub profile.
-
----
-
-## Author
-
-Dhiradj Ramgatie
-ISTQB Certified Tester (CTFL)
+* workflow testing
+* response validation
+* authentication handling
 
