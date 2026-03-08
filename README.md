@@ -68,6 +68,34 @@ Folder:
 api-testing/
 
 ---
+## Testing Skills Demonstrated
+
+This portfolio demonstrates experience with several important QA testing areas:
+
+### Manual Testing
+
+* Test case design
+* Positive and negative testing
+* Boundary value analysis
+* Exploratory testing
+* Validation testing
+
+### API Testing
+
+* REST API testing
+* Postman collections
+* Response validation
+* Workflow testing
+* Negative testing
+
+### Bug Reporting
+
+* Structured bug reports
+* Clear reproduction steps
+* Expected vs actual results
+* Priority classification
+
+---
 
 # Tools Used
 
