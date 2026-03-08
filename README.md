@@ -54,4 +54,56 @@ The collections demonstrate different API testing techniques such as:
 * workflow testing
 * response validation
 * authentication handling
+* negative testing
+* boundary value testing
+
+The API collections include:
+
+* Grocery Store API (complete order workflow)
+* Tool Rental API (order lifecycle testing)
+* Trello API (board, list and card workflow)
+
+Folder:
+
+api-testing/
+
+---
+
+# Tools Used
+
+The testing examples in this repository were created using:
+
+* Google Sheets
+* Jira
+* Zephyr Scale
+* Postman
+* ScreenPal
+
+---
+
+# Purpose of This Repository
+
+This repository demonstrates my ability to:
+
+* design structured manual test cases
+* apply test design techniques
+* document bugs clearly
+* perform API testing
+* think from a quality assurance perspective
+
+---
+
+# Related Automation Project
+
+In addition to manual and API testing, I also work with test automation using Playwright.
+
+My Playwright automation project can be found on my GitHub profile.
+
+---
+
+# Author
+
+Dhiradj Ramgatie
+ISTQB Certified Tester (CTFL)
+
 
