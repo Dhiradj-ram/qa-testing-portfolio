@@ -50,6 +50,39 @@ The collection also contains negative test scenarios to verify how the API handl
 * REST APIs
 * JSON response validation
 
+* ## Additional API Collections
+
+### Tool Rental API
+
+This collection tests a simple tool rental system API.
+
+The workflow includes:
+
+* retrieving available tools
+* registering an API client
+* creating a rental order
+* retrieving orders
+* updating orders
+* deleting orders
+* verifying that deleted orders cannot be retrieved
+
+---
+
+### Trello API
+
+This collection demonstrates testing of the Trello REST API.
+
+The workflow includes:
+
+* retrieving boards
+* creating a new board
+* creating lists
+* creating cards
+* moving cards between lists
+* deleting a board
+* verifying that deleted resources are no longer accessible
+
+
 ---
 
 ## Tools Used
